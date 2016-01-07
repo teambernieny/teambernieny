@@ -12,7 +12,7 @@ class CreateFilesEventsTable extends Migration
      */
     public function up()
     {
-      Schema::create('files_events', function (Blueprint $table) {
+      Schema::create('event_file', function (Blueprint $table) {
           $table->increments('id');
           $table->integer('file_id')->unsigned();
           $table->foreign('file_id')->references('id')->on('files');
@@ -30,6 +30,6 @@ class CreateFilesEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('files_events');
+        Schema::drop('event_file');
     }
 }

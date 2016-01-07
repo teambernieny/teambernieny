@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commitment extends Model
 {
-  public function eventsvolunteer() {
+  public function eventvolunteer() {
     # Volunteer who made commitment
-    return $this->belongsTo('\teambernieny\EventsVolunteer');
+    return $this->belongsTo('\teambernieny\EventVolunteer');
   }
 
 

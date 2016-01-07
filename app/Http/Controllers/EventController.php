@@ -23,17 +23,18 @@ class EventController extends Controller {
       $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
       if (sizeof($neighborhoods) > 0){
         $neighborhood = $neighborhoods->first();
+        $neighborhood_id = $neighborhood->id;
       } else {
         $neighborhood = new \teambernieny\Neighborhood();
         $neighborhood->Name = $request->Neighborhood;
         $neighborhood->Borough = $request->City;
         $neighborhood->save();
-        $neighborhood_id->$neighborhood->id;
+        $neighborhood_id = $neighborhood->id;
       }
       $event = new \teambernieny\Event();
       $event->Name = $request->EventName;
       $event->Date = $request->EventDate;
-      $event->neighborhood_id = $neighborhood->id;
+      $event->neighborhood_id = $neighborhood_id;
       $event->Type = $request->EventType;
       $event->save();
 

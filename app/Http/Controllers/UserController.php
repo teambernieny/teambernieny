@@ -15,10 +15,22 @@ class UserController extends Controller {
 
     public function getAdd(Request $request){
 
-      return view('add.user');
+
+      return view('user.add')->with('message', "");
     }
     public function postAdd(Request $request){
+      $users = \teambernieny\User::where('email','=',$request->email)->get();
+      if(sizeof($users) > 0) {
+        return view('user.add')->with('message', "User already exists");
+      } else {
+        $user = new \teambernieny\User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = \Hash::make($request->password);
+        $user->role = $request->role;
+        $user->save();
+        return view('user.add')->with('message',"User Added");
+      }
 
-      return view('add.user');
     }
 }

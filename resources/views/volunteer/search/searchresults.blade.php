@@ -1,4 +1,4 @@
-@extends('layouts.search')
+@extends('layouts.app')
 
 
 @section('contents')
@@ -6,7 +6,7 @@
 
 
 
-  <script> $(document).ready(function () {
+  <script type="text/javascript"> $(document).ready(function () {
 
     function exportTableToCSV($table, filename) {
         var $rows = $table.find('tr:has(td)'),
@@ -64,7 +64,8 @@
   :( Sorry no volunteers match that result
 </div>
 @else
-<a class="export" role="button" href='#' onclick='downloadCSV({ filename: "vol-data.csv" });'>Download CSV</a>
+
+<a class="export" href="#" >Download CSV</a>
 
 <div class ="row">
   <div id=dvData >

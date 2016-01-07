@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
-  public function event() {
+  public function events() {
     # Define an inverse one-to-many relationship.
     return $this->belongsTo('\teambernieny\Event');
   }

@@ -10,10 +10,14 @@
     <!-- Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
-
+    <link rel="stylesheet" href="/css/teambernieny.css" type="text/css" />
     <!-- Styles -->
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Scripts-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
     <style>
         body {
@@ -60,10 +64,10 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ url('/volSearchZip') }}">Volunteers By Zip/Neighborhood</a></li>
                             <li><a href="{{ url('/volSearchName') }}">Volunteers By Name</a></li>
-                            <li><a href="{{ url('/volSearchEvent') }}">Volunteers By Event</a></li>
+                            {{--<li><a href="{{ url('/volSearchEvent') }}">Volunteers By Event</a></li> --}}
                             <li><a href="{{ url('/volAll') }}">All Volunteers</a></li>
-                            <li><a href="{{ url('/eventSearchZip') }}">Event By Neighborhood</a></li>
-                            <li><a href="{{ url('/eventSearchDate') }}">Event By Date</a></li>
+                            {{--<li><a href="{{ url('/eventSearchNeighborhood') }}">Event By Neighborhood</a></li>--}}
+                            {{--<li><a href="{{ url('/eventSearchDate') }}">Event By Date</a></li>--}}
                             <li><a href="{{ url('/eventAll') }}">All Events</a></li>
                         </ul>
                 </ul>
@@ -74,7 +78,7 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -90,8 +94,11 @@
             </div>
         </div>
     </nav>
-
-    @yield('contents')
+    <div class="container theme-showcase" role="main">
+      <div class='row'>
+        @yield('contents')
+      </div>
+    </div>
 
     <!-- JavaScripts -->
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}

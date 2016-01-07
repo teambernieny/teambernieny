@@ -26,13 +26,14 @@ class Volunteer extends Model
   public function events()
   {
     # With timetsamps() will ensure the pivot table has its created_at/updated_at fields automatically maintained
-    return $this->belongsToMany('\teambernieny\Event')->withTimestamps();
+    return $this->belongsToMany('\teambernieny\Event', 'event_volunteers')->withTimestamps();
 
   }
   public function contactevents() {
      return $this->hasMany('\teambernieny\Contactevent');
   }
+  
   public function commitments() {
-     return $this->hasMany('\teambernieny\Commitment');
+     return $this->hasManyThrough('\teambernieny\Commitment', 'teambernieny\EventVolunteers');
   }
 }

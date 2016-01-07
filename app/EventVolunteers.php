@@ -4,7 +4,7 @@ namespace teambernieny;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EventsVolunteer extends Model
+class EventVolunteers extends Model
 {
   public function volunteer() {
 

@@ -20,7 +20,7 @@
         <input type='text' class='form-control' id='Email' name='Email' value='{{$email}}'> <br>
       </div>
       <div class = 'form-group'>
-        <label for='Phone'>Phone:</label>
+        <label for='Phone'>Phone (no dashes):</label>
         <input type='text' class='form-control' id='Phone' name='Phone'> <br>
       </div>
       <div class = 'form-group'>

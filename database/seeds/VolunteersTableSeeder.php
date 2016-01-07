@@ -68,17 +68,20 @@ class VolunteersTableSeeder extends Seeder
 
 
           //add neighborhood if doesn't exist
-          $neighborhood = \teambernieny\Neighborhood::where('Name','=',$volunteer->Neighborhood)->pluck('id');
-          if (($neighborhood == "") && ($volunteer->Neighborhood != "")) {
+          $neighborhoods = \teambernieny\Neighborhood::where('Name','=',$volunteer->Neighborhood)->get();
+
+          if ((sizeof($neighborhoods) == 0) && ($volunteer->Neighborhood != "")) {
             DB::table('neighborhoods')->insert([
               'created_at' => Carbon\Carbon::now()->toDateTimeString(),
               'updated_at' => Carbon\Carbon::now()->toDateTimeString(),
               'Name' => $volunteer->Neighborhood,
               'Borough' => $volunteer->City
             ]);
-            $neighborhood = \teambernieny\Neighborhood::where('Name','=',$volunteer->Neighborhood)->pluck('id');
+            $neighborhood_id = \teambernieny\Neighborhood::max('id');
           } else if ($volunteer->Neighborhood ==  "") {
-            $neighborhood = "1";
+            $neighborhood_id = "1";
+          } else {
+            $neighborhood_id = $neighborhoods[0]->id;
           }
           // add volunteer
           DB::table('volunteers')->insert([
@@ -88,7 +91,7 @@ class VolunteersTableSeeder extends Seeder
             'LastName' => $volunteer->LastName,
             'Email' => $volunteer->EMail1,
             'Phone' => $volunteer->Phone1,
-            'neighborhood_id' => $neighborhood,
+            'neighborhood_id' => $neighborhood_id,
             'Zip' => $volunteer->Zip,
             'Street' => $volunteer->Street,
             'City' => $volunteer->City,
@@ -99,19 +102,19 @@ class VolunteersTableSeeder extends Seeder
             'DoNotContact' => $volunteer->DoNotContact
           ]);
           $volunteerid = \teambernieny\Volunteer::max('id');
-          DB::table('events_volunteers')->insert([
+          DB::table('event_volunteers')->insert([
             'created_at' => Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => Carbon\Carbon::now()->toDateTimeString(),
             'event_id' => '1',
             'volunteer_id' => $volunteerid,
             'Relationship' => 'Attendee'
           ]);
-          $eventsvolunteers_id = \teambernieny\EventsVolunteer::max('id');
+          $eventvolunteers_id = \teambernieny\EventVolunteers::max('id');
           if($volunteer->AttendEvent == "1") {
             DB::table('commitments')->insert([
               'created_at' => Carbon\Carbon::now()->toDateTimeString(),
               'updated_at' => Carbon\Carbon::now()->toDateTimeString(),
-              'events_volunteer_id' => $eventsvolunteers_id,
+              'event_volunteers_id' => $eventvolunteers_id,
               'Type' => "Attend"
             ]);
           }
@@ -119,7 +122,7 @@ class VolunteersTableSeeder extends Seeder
             DB::table('commitments')->insert([
               'created_at' => Carbon\Carbon::now()->toDateTimeString(),
               'updated_at' => Carbon\Carbon::now()->toDateTimeString(),
-              'events_volunteer_id' => $eventsvolunteers_id,
+              'event_volunteers_id' => $eventvolunteers_id,
               'Type' => "Host"
             ]);
           }

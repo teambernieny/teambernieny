@@ -14,8 +14,8 @@ class CreateCommitmentsTable extends Migration
     {
       Schema::create('commitments', function (Blueprint $table) {
           $table->increments('id');
-          $table->integer('events_volunteer_id')->unsigned();
-          $table->foreign('events_volunteer_id')->references('id')->on('events_volunteers');
+          $table->integer('event_volunteers_id')->unsigned();
+          $table->foreign('event_volunteers_id')->references('id')->on('event_volunteers');
           $table->string('Type');
           $table->timestamps();
 

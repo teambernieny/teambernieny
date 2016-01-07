@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+/*
 Route::group(['middleware' => 'auth'], function () {
   # Landing page
   Route::get('/', 'DataController@gethome');
@@ -89,7 +90,7 @@ Route::get('/register', 'Auth\AuthController@getRegister');
 
 # Process registration form
 Route::post('/register', 'Auth\AuthController@postRegister');
-
+*/
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -158,6 +159,9 @@ Route::group(['middleware' => ['web']], function () {
     #Add/edit files
     Route::get('/addFile', 'FileController@getAdd');
     Route::post('/addFile', 'FileController@postAdd');
+    Route::post('/completeFile', 'FileController@postComplete');
+    Route::get('/editFile', 'FileController@getEdit');
+    Route::post('/editFile', 'FileController@postEdit');
 
     #Add/edit users
     Route::get('/addUser', 'UserController@getAdd');

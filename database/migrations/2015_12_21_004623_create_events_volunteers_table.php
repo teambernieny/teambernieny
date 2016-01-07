@@ -12,7 +12,7 @@ class CreateEventsVolunteersTable extends Migration
      */
     public function up()
     {
-      Schema::create('events_volunteers', function (Blueprint $table) {
+      Schema::create('event_volunteers', function (Blueprint $table) {
           $table->increments('id');
           $table->integer('volunteer_id')->unsigned();
           $table->foreign('volunteer_id')->references('id')->on('volunteers');
@@ -31,6 +31,6 @@ class CreateEventsVolunteersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('events_volunteers');
+        Schema::drop('event_volunteers');
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.add')
+@extends('layouts.app')
 
 
 @section('contents')
@@ -15,7 +15,7 @@
     </form>
   </div>
   <div class="col-md-6 col-md-offset-3">
-  <form class="form" method='POST' action="/searchVolEvent">
+  <form class="form" method='POST' action="/volSearchEvent">
     <h2>Search by Date</h2>
     Event Date
     <input type="text" name="EventDate"> <br>

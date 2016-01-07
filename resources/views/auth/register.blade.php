@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('contents')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -65,6 +65,20 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group">
+                          <label class="col-md-4 control-label">Role</label>
+                          <div class="col-md-2">
+                            <div class="radio">
+                                <input type='radio' name='role' value='admin' required />   Admin
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <div class="radio">
+                                <input type='radio' name='role' value='regular' required />   Regular
+                             </div>
+                           </div>
+                          </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

@@ -46,7 +46,7 @@
     </div>
       <button class="btn btn-success" type="submit"  >Edit Attendance</button>
       <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-      <input type='hidden' name = 'attendace_id' value="{{$attendance->id}}">
+      <input type='hidden' name = 'attendance' value="{{$attendance->id}}">
 
     </form>
   </div>
