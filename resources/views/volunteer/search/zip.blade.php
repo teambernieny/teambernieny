@@ -51,7 +51,7 @@
         <div class='col-md-2'>
           <h3>Other</h3>
           @foreach ($other as $neighborhood)
-          <input type='checkbox' name='neighborhoods[]' value='{{$neighborhood->id}}'> {{ $neighborhood->Name }}<br>
+          <input type='checkbox' name='neighborhoods[]' value='{{$neighborhood->id}}'> {{ $neighborhood->Name }}, {{$neighborhood->Borough}}<br>
           @endforeach
         </div>
       </div>

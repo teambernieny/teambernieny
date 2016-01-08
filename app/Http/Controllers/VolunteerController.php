@@ -35,31 +35,39 @@ class VolunteerController extends Controller {
       return view('volunteer.add')->with('email', '' );
     }
     public function postAdd(Request $request){
-      $volunteer = new \teambernieny\Volunteer();
-      $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
-      if (sizeof($neighborhoods) > 0){
-        $neighborhood = $neighborhoods->first();
-
+      $volunteers = \teambernieny\Volunteer::where('Email','=',$request->Email)->get();
+      if(sizeof($volunteers) > 0){
+        return view('volunteer.edit')->with([
+          'volunteer' => $volunteers[0]
+        ]);
       } else {
-        $neighborhood = new \teambernieny\Neighborhood();
-        $neighborhood->Name = $request->Neighborhood;
-        $neighborhood->Borough = $request->City;
-        $neighborhood->save();
 
+        $volunteer = new \teambernieny\Volunteer();
+        $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
+        if (sizeof($neighborhoods) > 0){
+          $neighborhood = $neighborhoods->first();
+
+        } else {
+          $neighborhood = new \teambernieny\Neighborhood();
+          $neighborhood->Name = $request->Neighborhood;
+          $neighborhood->Borough = $request->City;
+          $neighborhood->save();
+
+        }
+        $neighborhood_id=$neighborhood->id;
+        $volunteer->FirstName = $request->FirstName;
+        $volunteer->LastName = $request->LastName;
+        $volunteer->Email = $request->Email;
+        $volunteer->Phone = $request->Phone;
+        $volunteer->Zip = $request->Zip;
+        $volunteer->neighborhood_id = $neighborhood_id;
+        $volunteer->Street = $request->Street;
+        $volunteer->neighborhood->Borough = $request->City;
+        $volunteer->City = $request->City;
+        $volunteer->save();
+
+        return view('volunteer.check')->with('message','Volunteer Added');
       }
-      $neighborhood_id=$neighborhood->id;
-      $volunteer->FirstName = $request->FirstName;
-      $volunteer->LastName = $request->LastName;
-      $volunteer->Email = $request->Email;
-      $volunteer->Phone = $request->Phone;
-      $volunteer->Zip = $request->Zip;
-      $volunteer->neighborhood_id = $neighborhood_id;
-      $volunteer->Street = $request->Street;
-      $volunteer->neighborhood->Borough = $request->City;
-      $volunteer->City = $request->City;
-      $volunteer->save();
-
-      return view('volunteer.check')->with('message','Volunteer Added');
     }
 
     public function postEdit(Request $request){
