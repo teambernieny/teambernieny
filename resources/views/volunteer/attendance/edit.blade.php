@@ -39,10 +39,11 @@
         <input type='text' class='form-control' id='Borough' name='City' value="{{$attendance->volunteer->City}}"> <br>
       </div>
       <div class = 'form-group'>
-        <label for='Commitments'>Event Commitments from {{$attendance->event->Name}}:</label>
-
-      <input {{ $host }} type='checkbox' class='form-control' id='Commitments' name='commitments[]' value='Host'> Host <br>
-      <input {{ $attend }} type='checkbox' class='form-control' id='Commitments' name='commitments[]' value='Attend'> Attend<br>
+        <h3>Event Commitments from {{$attendance->event->Name}}:</h3>
+        <label for='Host'>Host   </label>
+        <input {{$host}} type='checkbox'  id='Host' name='commitments[]' value='Host'> <br>
+        <label for='Attend'>Attend   </label>
+        <input {{$attend}} type='checkbox'  id='Attend' name='commitments[]' value='Attend'> <br>
     </div>
       <button class="btn btn-success" type="submit"  >Edit Attendance</button>
       <input type='hidden' name='_token' value='{{ csrf_token() }}'>

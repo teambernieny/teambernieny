@@ -142,8 +142,9 @@ class AttendeeController extends Controller {
             $newcommitment->Type = $commitment;
             $newcommitment->save();
           }
-          $message = 'Volunteer Attendance Added!';
+
         }
+        $message = 'Volunteer Attendance Added!';
       } else {
         $message = 'Whoops! Volunteer Attendance already added... try further down in the file';
       }
@@ -193,7 +194,7 @@ class AttendeeController extends Controller {
                 $commitment->delete();
               }
             }
-          
+
           foreach($request->commitments as $newcommitment){
               $exists = 0;
               foreach($attendance->commitments as $oldcommitment){

@@ -25,6 +25,7 @@
             <button class="btn btn-link" id="editlink" type="submit">Edit</button>
             <input type='hidden' name='_token' value='{{ csrf_token() }}'>
             <input type='hidden' name='attendance' value='{{$attendee->id}}'>
+        
           </form>
           </td>
        @endif
@@ -69,9 +70,11 @@
         <input type='text' class='form-control' id='Borough' name='City' value="{{$volunteer->City}}"> <br>
       </div>
       <div >
-      <label for='Commitments'>Event Commitments from {{$event->Name}}:</label>
-      <input type='checkbox' class='form-control' id='Commitments' name='commitments[]' value='Host'> Host <br>
-      <input type='checkbox' class='form-control' id='Commitments' name='commitments[]' value='Attend'> Attend<br>
+      <h3>Event Commitments from {{$event->Name}}:</h3>
+      <label for='Host'>Host</label>
+      <input type='checkbox'  id='Host' name='commitments[]' value='Host'> <br>
+      <label for='Attend'>Attend</label>
+      <input type='checkbox'  id='Attend' name='commitments[]' value='Attend'> <br>
       </div>
       <button class="btn btn-success" type="submit"  >Add Attendance</button>
       <input type='hidden' name='_token' value='{{ csrf_token() }}'>
