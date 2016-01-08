@@ -34,7 +34,7 @@
         <div class="container">
             <div class="navbar-header">
 
-              
+
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#spark-navbar-collapse">
                     <span class="sr-only">Toggle Navigation</span>
                     <span class="icon-bar"></span>
@@ -50,6 +50,7 @@
 
             <div class="collapse navbar-collapse" id="spark-navbar-collapse">
                 <!-- Left Side Of Navbar -->
+                @if(Auth::check())
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href='/checkVolunteer'>Find Volunteer</a></li>
@@ -70,7 +71,7 @@
                             <li><a href="{{ url('/eventAll') }}">All Events</a></li>
                         </ul>
                 </ul>
-
+                @endif
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">

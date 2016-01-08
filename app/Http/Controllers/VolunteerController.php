@@ -151,8 +151,15 @@ class VolunteerController extends Controller {
     }
     public function postSearchName(Request $request){
       if($request->type == 'Name'){
-        $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
-
+        if(($request->FirstName != "") && ($request->LastName != "")){
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
+        } elseif($request->FirstName != ""){
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('FirstName','=',$request->FirstName)->get();
+        } elseif($request->LastName != ""){
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('LastName','=',$request->LastName)->get();
+        } else {
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
+        }
       } else if ($request->type == 'Email'){
         $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('Email','=',$request->Email)->get();
 
