@@ -74,6 +74,21 @@ class VolunteerController extends Controller {
       $volunteer->Street = $request->Street;
       $volunteer->neighborhood->Borough = $request->City;
       $volunteer->City = $request->City;
+      if($request->BadEmail == 'true'){
+        $volunteer->BadEmail = "1";
+      } else {
+        $volunteer->BadEmail = "0";
+      }
+      if($request->BadPhone == 'true'){
+        $volunteer->BadPhone = "1";
+      } else {
+        $volunteer->BadPhone = "0";
+      }
+      if($request->DoNotContact == 'true'){
+        $volunteer->DoNotContact = "1";
+      } else {
+        $volunteer->DoNotContact = "0";
+      }
       $volunteer->neighborhood->save();
       $volunteer->save();
 

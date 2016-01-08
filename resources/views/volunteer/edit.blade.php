@@ -27,20 +27,42 @@
         <input type='text' class='form-control' id='Neighborhood' name='Neighborhood' value="{{$volunteer->Neighborhood->Name}}"> <br>
       </div>
       <div class = 'form-group'>
-        <label for='FirstName'>Street:</label>
+        <label for='Street'>Street:</label>
         <input type='text' class='form-control' id='Street' name='Street' value="{{$volunteer->Street}}"> <br>
-      <div>
+      </div>
       <div class = 'form-group'>
-        <label for='FirstName'>Zip:</label>
+        <label for='Zip'>Zip:</label>
         <input type='text' class='form-control' id='Zip' name='Zip' value="{{$volunteer->Zip}}"> <br>
       </div>
       <div class = 'form-group'>
-        <label for='FirstName'>Borough:</label>
+        <label for='Borough'>Borough:</label>
         <input type='text' class='form-control' id='Borough' name='City' value="{{$volunteer->City}}"> <br>
       </div>
-      <button class="btn btn-success" type="submit"  >Edit</button>
-      <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-      <input type='hidden' name = 'volunteer_id' value="{{$volunteer->id}}">
+
+      <div class = "col-md-4">
+
+        <?php $checked = ($volunteer->BadEmail == "1") ? 'checked' : ''?>
+        Bad Email
+        <input type='checkbox' class='form-control' id='BadEmail' name='BadEmail' value="true" {{$checked}}> <br>
+      </div>
+      <div class = "col-md-4">
+        <?php $checked = ($volunteer->BadPhone == "1") ? 'checked' : '' ?>
+        Bad Phone
+        <input type='checkbox' class='form-control' id='BadPhone' name='BadPhone' value="true" {{$checked}}> <br>
+      </div>
+      <div class = "col-md-5">
+        Do Not Contact
+        <?php $checked = ($volunteer->DoNotContact == "1") ? 'checked' : '' ?>
+        <input type='checkbox' class='form-control' id='DoNotContact' name='DoNotContact' value="true" {{$checked}}> <br>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <button class="btn btn-success btn-block" type="submit"  >Edit</button>
+          <input type='hidden' name='_token' value='{{ csrf_token() }}'>
+          <input type='hidden' name = 'volunteer_id' value="{{$volunteer->id}}">
+        </div>
+      </div>
+
     </form>
   </div>
 </div>

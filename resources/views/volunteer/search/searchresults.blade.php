@@ -77,7 +77,7 @@
       <tr>
         <td>{{$volunteer->FirstName}} </td><td>{{$volunteer->LastName}} </td><td>{{$volunteer->Email}} </td><td>{{$volunteer->Phone}} </td> <td>{{$volunteer->Zip}} </td><td>{{$volunteer->neighborhood->Name}} </td><td>{{$volunteer->BadPhone}} </td><td>{{$volunteer->BadEmail}} </td><td>{{$volunteer->DoNotContact}} </td>
         <td>
-        <form method='POST' action='/addVolunteer'>
+        <form method='POST' action='/checkVolunteer'>
           <button class="btn btn-link" id="editlink" type="submit">Edit</button>
           <input type='hidden' name='_token' value='{{ csrf_token() }}'>
           <input type='hidden' name='Email' value='{{$volunteer->Email}}'>

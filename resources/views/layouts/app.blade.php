@@ -44,7 +44,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    NY Volunteer Hub
+                    TeamBernieNY Volunteer Hub
                 </a>
             </div>
 
@@ -52,10 +52,9 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href='/checkVolunteer'>Add Volunteer</a></li>
+                    <li><a href='/checkVolunteer'>Find Volunteer</a></li>
                     <li><a href='/addVolunteer'>Add Volunteer Direct</a></li>
                     <li><a href='/addEvent'>Add Event</a></li>
-                    <li><a href='/addFile'>Add File</a></li>
                     <li><a href='/addUser'>Add User</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -63,7 +62,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ url('/volSearchZip') }}">Volunteers By Zip/Neighborhood</a></li>
-                            <li><a href="{{ url('/volSearchName') }}">Volunteers By Name</a></li>
+                            <li><a href="{{ url('/volSearchName') }}">Individual Volunteers</a></li>
                             {{--<li><a href="{{ url('/volSearchEvent') }}">Volunteers By Event</a></li> --}}
                             <li><a href="{{ url('/volAll') }}">All Volunteers</a></li>
                             {{--<li><a href="{{ url('/eventSearchNeighborhood') }}">Event By Neighborhood</a></li>--}}

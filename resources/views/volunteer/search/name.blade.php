@@ -4,16 +4,16 @@
 @section('contents')
 <h1>Search Volunteers By Name</h1>
 <div class="row">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-4 col-md-offset-4">
     <form class="form" method='POST' action="/volSearchName">
       <h2>Search by Name</h2>
       <div class="form-group">
-        First Name
-        <input type="text" name="FirstName"> <br>
+        <label for="FirstName">First Name</label>
+        <input type="text" class="form-control" id="FirstName" name="FirstName"> <br>
       </div>
       <div class = "form-group">
-      Last Name
-      <input type="text" name="LastName"> <br>
+      <label for="LastName">Last Name</label>
+      <input type="text" class="form-control" id="LastName" name="LastName"> <br>
     </div>
     <div class = "form-group">
       <button class="btn btn-success" type="submit"  >Search</button>
@@ -24,8 +24,8 @@
     <form class="form" method='POST' action="/volSearchName">
         <h2>Search by Email</h2>
         <div class = "form-group">
-          Email
-          <input type="text" name="Email"> <br>
+          <label for="Email">Email</label>
+          <input type="text" class="form-control" id="Email" name="Email"> <br>
         </div>
         <div class="form-group">
           <button class="btn btn-success" type="submit"  >Search </button>
@@ -36,8 +36,8 @@
       <form class="form" method='POST' action="/volSearchName">
         <h2>Search by Phone</h2>
         <div class="form-group">
-          Phone
-          <input type="text" name="Phone"> <br>
+          <label for="Phone">Phone</label>
+          <input type="text" class="form-control" id="Phone" name="Phone"> <br>
         </div>
         <div>
           <button class="btn btn-success" type="submit"  >Search</button>

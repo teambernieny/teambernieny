@@ -27,15 +27,15 @@
         <input type='text' class='form-control' id='Neighborhood' name='Neighborhood' value="{{$attendance->volunteer->Neighborhood->Name}}"> <br>
       </div>
       <div class = 'form-group'>
-        <label for='FirstName'>Street:</label>
+        <label for='Street'>Street:</label>
         <input type='text' class='form-control' id='Street' name='Street' value="{{$attendance->volunteer->Street}}"> <br>
       <div>
       <div class = 'form-group'>
-        <label for='FirstName'>Zip:</label>
+        <label for='Zip'>Zip:</label>
         <input type='text' class='form-control' id='Zip' name='Zip' value="{{$attendance->volunteer->Zip}}"> <br>
       </div>
       <div class = 'form-group'>
-        <label for='FirstName'>Borough:</label>
+        <label for='Borough'>Borough:</label>
         <input type='text' class='form-control' id='Borough' name='City' value="{{$attendance->volunteer->City}}"> <br>
       </div>
       <div class = 'form-group'>
