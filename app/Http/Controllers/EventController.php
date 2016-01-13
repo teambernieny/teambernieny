@@ -16,7 +16,7 @@ class EventController extends Controller {
 ####################################------------------INTERACTING WITH THE DATA --------------------------#################################
     public function getAdd(Request $request){
 
-      $event_types = ['Canvassing','Flyering','Petitioning'];
+      $event_types = ['Canvassing','Flyering','Petitioning','Meeting'];
       return view('event.add')->with('event_types',$event_types);
     }
     public function postAdd(Request $request){

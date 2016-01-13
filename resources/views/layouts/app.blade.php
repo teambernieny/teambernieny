@@ -53,8 +53,10 @@
                 @if(Auth::check())
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href='/volSearchName'>Find Volunteer</a></li>
                     <li><a href='/addVolunteer'>Add Volunteer Direct</a></li>
+                    @if(Auth::user()->role == "admin")
+                    <li><a href='/adminHome'>Admin Home </a></li>
+                    <li><a href='/volSearchName'>Find Volunteer</a></li>
                     <li><a href='/addEvent'>Add Event</a></li>
                     <li><a href='/addUser'>Add User</a></li>
                     <li class="dropdown">
@@ -70,6 +72,7 @@
                             {{--<li><a href="{{ url('/eventSearchDate') }}">Event By Date</a></li>--}}
                             <li><a href="{{ url('/eventAll') }}">All Events</a></li>
                         </ul>
+                    @endif
                 </ul>
                 @endif
 

@@ -54,6 +54,17 @@ class FileController extends Controller {
         'event' => $event
       ]);
     }
+    public function postCompleteReg(Request $request){
+      $file = \teambernieny\File::find($request->file_id);
+      $file->CompletedRows = $file->TotalRows;
+      $file->Completed = "1";
+      $file->save();
+      $twoweeks = time() - (7 * 24 * 60 * 60 * 2);
+      $events = \teambernieny\Event::with('neighborhood')->with('files')->where('Date','>', date('Y-m-d',$twoweeks))->where('id','!=','1')->orderby('Date', 'DESC')->get();
+      return view('home')->with([
+        'events' => $events
+      ]);
+    }
     public function getEdit(Request $request){
       $file = \teambernieny\File::find($request->file_id);
       $event = \teambernieny\Event::with('files')->find($request->event_id);

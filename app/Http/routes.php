@@ -146,10 +146,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/editAttendance', 'AttendeeController@getEditAttendance');
     Route::post('/editAttendance', 'AttendeeController@postEditAttendance');
 
-
-
-
-
     #Add/edit events
     Route::get('/addEvent', 'EventController@getAdd');
     Route::post('/addEvent', 'EventController@postAdd');
@@ -160,6 +156,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/addFile', 'FileController@getAdd');
     Route::post('/addFile', 'FileController@postAdd');
     Route::post('/completeFile', 'FileController@postComplete');
+    Route::post('/completeFileReg', 'FileController@postCompleteReg');
     Route::get('/editFile', 'FileController@getEdit');
     Route::post('/editFile', 'FileController@postEdit');
 
@@ -167,8 +164,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/addUser', 'UserController@getAdd');
     Route::post('/addUser','UserController@postAdd');
 
-    # DataCleanUP
-    Route::get('/datahome', 'DataController@getdatahome');
+    #AdminDashboard
+    Route::get('/adminHome', 'HomeController@getAdminHome');
 
   });
 });

@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'app@teamberieny.org', 'name' => 'TBNYHub'],
+    'from' => ['address' => 'app@teambernieny.org', 'name' => 'TBNYHub'],
 
     /*
     |--------------------------------------------------------------------------
