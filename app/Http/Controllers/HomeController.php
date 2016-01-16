@@ -26,15 +26,26 @@ class HomeController extends Controller
     public function index()
     {
         $twoweeks = time() - (7 * 24 * 60 * 60 * 2);
-        $events = \teambernieny\Event::with('neighborhood')->with('files')->where('Date','>', date('Y-m-d',$twoweeks))->where('id','!=','1')->orderby('Date', 'DESC')->get();
+        $events = \teambernieny\Event::with('neighborhood')->with('files')->with('volunteers')->where('Date','>', date('Y-m-d',$twoweeks))->where('id','!=','1')->orderby('Date', 'DESC')->get();
+        $eventrows = array();
+        foreach($events as $event){
+          $totalrows = 0;
+          foreach($event->files as $file){
+            $totalrows = $totalrows + $file->TotalRows;
+            $filenew = \teambernieny\File::with('user')->find($file->id);
+            $file = $filenew;
+          }
+          $eventrows[$event->id] = $totalrows;
+        }
         return view('home')->with([
-          'events' => $events
+          'events' => $events,
+          'eventrows' => $eventrows
         ]);
     }
 
     public function getAdminHome(){
-      $twoweeks = time() - (7 * 24 * 60 * 60 * 2);
-      $events = \teambernieny\Event::with('neighborhood')->where('Date','>', date('Y-m-d',$twoweeks))->where('id', '!=', '1')->orderby('Date', 'DESC')->get();
+
+      $events = \teambernieny\Event::with('neighborhood')->where('id', '!=', '1')->orderby('Date', 'DESC')->get();
       return view('adminhome')->with([
         'events' => $events
       ]);

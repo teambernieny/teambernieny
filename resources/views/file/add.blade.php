@@ -21,6 +21,7 @@
             <input type='hidden' name='_token' value='{{ csrf_token() }}'>
             <input type='hidden' name='file_id' value='{{$file->id}}'>
             <input type='hidden' name='event_id' value='{{$event->id}}'>
+            <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
           </form>
           @endif
           </td>
@@ -57,6 +58,7 @@
       <button class="btn btn-success" type="submit"  >Add</button>
       <input type='hidden' name='_token' value='{{ csrf_token() }}'>
       <input type='hidden' name='event_id' value='{{$event->id}}'>
+      <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
     </form>
   </div>
 </div>
