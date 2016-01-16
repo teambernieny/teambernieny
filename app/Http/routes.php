@@ -159,6 +159,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/completeFileReg', 'FileController@postCompleteReg');
     Route::get('/editFile', 'FileController@getEdit');
     Route::post('/editFile', 'FileController@postEdit');
+    Route::get('/uploadFile', 'FileController@getUpload');
 
     #Add/edit users
     Route::get('/addUser', 'UserController@getAdd');

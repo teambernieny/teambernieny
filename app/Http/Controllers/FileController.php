@@ -70,7 +70,7 @@ class FileController extends Controller {
         foreach($event->files as $file){
           $totalrows = $totalrows + $file->TotalRows;
           $filenew = \teambernieny\File::with('user')->find($file->id);
-          $file = $filenew; 
+          $file = $filenew;
         }
         $eventrows[$event->id] = $totalrows;
       }
@@ -110,5 +110,8 @@ class FileController extends Controller {
         'event' => $event
       ]);
     }
+      public function getUpload(Request $request){
+        return view('file.upload');
+      }
 
 }
