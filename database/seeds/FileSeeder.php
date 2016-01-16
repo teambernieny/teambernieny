@@ -16,15 +16,13 @@ class FileSeeder extends Seeder
       $file = fopen("public_html/hub/teambernieny/uploads","r");
 
       ## Get the header line = Event(0),Date(1),FirstName(2),LastName(3),Gender(4),Phone(5),Zip(6),Neighborhood(7),Email(8),Street(9),City(10),State(11),HostEvent(12),AttendEvent(13),Comment(14)
-      echo($file);
       $x = 0;
       while (($data = fgetcsv($file)) !== FALSE){
         if ($x == 0){
           $x = $x+1;
-          echo(implode($data));
           continue;
         }
-        echo(implode($data));
+
         echo("inwhile");
         if($data[0] != ""){
 
