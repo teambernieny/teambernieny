@@ -6,7 +6,7 @@
 <script>
 $(function () {
     $('#fileupload').fileupload({
-        dataType: 'json',
+        dataType: 'html',
         add: function (e, data) {
             data.context = $('<p/>').text('Uploading...').appendTo(document.body);
             data.submit();
