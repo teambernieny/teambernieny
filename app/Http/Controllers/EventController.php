@@ -16,7 +16,7 @@ class EventController extends Controller {
 ####################################------------------INTERACTING WITH THE DATA --------------------------#################################
     public function getAdd(Request $request){
 
-      $event_types = ['Canvassing','Flyering','Petitioning','Meeting'];
+      $event_types = ['Canvassing','Flyering','Meeting','Petitioning','PhoneBanking','Other'];
       return view('event.add')->with('event_types',$event_types);
     }
     public function postAdd(Request $request){
@@ -55,7 +55,7 @@ class EventController extends Controller {
       ]);
     }
     public function getEdit(Request $request){
-      $event_types = ['Canvassing','Flyering','Petitioning'];
+      $event_types = ['Canvassing','Flyering','Meeting','Petitioning','PhoneBanking','Other'];
       $event = \teambernieny\Event::with('neighborhood')->find($request->event_id);
 
       return view('event.edit')->with([
