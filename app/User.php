@@ -23,4 +23,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function volunteers() {
+       return $this->hasMany('\teambernieny\Volunteer');
+    }
+
+    public function files() {
+       return $this->hasMany('\teambernieny\File');
+    }
 }

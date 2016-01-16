@@ -48,7 +48,9 @@ class FileController extends Controller {
       $file = \teambernieny\File::find($request->file_id);
       $file->CompletedRows = $file->TotalRows;
       $file->Completed = "1";
+      $file->user_id = $request->user_id;
       $file->save();
+
       $event = \teambernieny\Event::with('files')->find($request->event_id);
       return view('file.add')->with([
         'event' => $event
@@ -58,11 +60,23 @@ class FileController extends Controller {
       $file = \teambernieny\File::find($request->file_id);
       $file->CompletedRows = $file->TotalRows;
       $file->Completed = "1";
+      $file->user_id = $request->user_id;
       $file->save();
       $twoweeks = time() - (7 * 24 * 60 * 60 * 2);
       $events = \teambernieny\Event::with('neighborhood')->with('files')->where('Date','>', date('Y-m-d',$twoweeks))->where('id','!=','1')->orderby('Date', 'DESC')->get();
+      $eventrows = array();
+      foreach($events as $event){
+        $totalrows = 0;
+        foreach($event->files as $file){
+          $totalrows = $totalrows + $file->TotalRows;
+          $filenew = \teambernieny\File::with('user')->find($file->id);
+          $file = $filenew; 
+        }
+        $eventrows[$event->id] = $totalrows;
+      }
       return view('home')->with([
-        'events' => $events
+        'events' => $events,
+        'eventrows' => $eventrows
       ]);
     }
     public function getEdit(Request $request){
@@ -84,8 +98,10 @@ class FileController extends Controller {
       }
       if($request->Completed == "true"){
         $file->Completed = 1;
+        $file->user_id = $request->user_id;
       }else{
         $file->Completed = 0;
+        $file->user_id = "";
       }
       $file->save();
 

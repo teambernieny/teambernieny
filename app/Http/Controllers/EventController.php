@@ -39,8 +39,19 @@ class EventController extends Controller {
       $event->save();
 
       $events = \teambernieny\Event::with('neighborhood')->orderby('Date', 'DESC')->get();
+      $eventrows = array();
+      foreach($events as $event){
+        $totalrows = 0;
+        foreach($event->files as $file){
+          $totalrows = $totalrows + $file->TotalRows;
+          $filenew = \teambernieny\File::with('user')->find($file->id);
+          $file = $filenew; 
+        }
+        $eventrows[$event->id] = $totalrows;
+      }
       return view('home')->with([
-        'events' => $events
+        'events' => $events,
+        'eventrows' => $eventrows
       ]);
     }
     public function getEdit(Request $request){
