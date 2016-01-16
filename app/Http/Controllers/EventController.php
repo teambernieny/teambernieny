@@ -65,11 +65,22 @@ class EventController extends Controller {
 
     }
     public function postEdit(Request $request){
+      $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
+      if (sizeof($neighborhoods) > 0){
+        $neighborhood = $neighborhoods->first();
+        $neighborhood_id = $neighborhood->id;
+      } else {
+        $neighborhood = new \teambernieny\Neighborhood();
+        $neighborhood->Name = $request->Neighborhood;
+        $neighborhood->Borough = $request->City;
+        $neighborhood->save();
+        $neighborhood_id = $neighborhood->id;
+      }
       $eventcol = \teambernieny\Event::with('neighborhood')->where('id','=',$request->event_id)->get();
       $event = $eventcol->first();
       $event->Name = $request->EventName;
       $event->Date = $request->EventDate;
-      $event->neighborhood->Name = $request->Neighborhood;
+      $event->neighborhood_id = $neighborhood_id;
       $event->Type = $request->EventType;
       $event->neighborhood->save();
       $event->save();
