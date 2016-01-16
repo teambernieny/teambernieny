@@ -45,7 +45,7 @@ class EventController extends Controller {
         foreach($event->files as $file){
           $totalrows = $totalrows + $file->TotalRows;
           $filenew = \teambernieny\File::with('user')->find($file->id);
-          $file = $filenew; 
+          $file = $filenew;
         }
         $eventrows[$event->id] = $totalrows;
       }
@@ -74,7 +74,7 @@ class EventController extends Controller {
       $event->neighborhood->save();
       $event->save();
       $events = \teambernieny\Event::with('neighborhood')->orderby('Date', 'DESC')->get();
-      return view('home')->with([
+      return view('adminhome')->with([
       'events'=> $events
       ]);
     }
