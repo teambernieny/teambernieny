@@ -21,8 +21,6 @@ class FileController extends Controller {
       ]);
     }
     public function postAdd(Request $request){
-      $files = \teambernieny\File::where('Name','=',$request->FileName)->get();
-      if(sizeof($files) == 0){
         $file = new \teambernieny\File();
         $file->event_id = $request->event_id;
         $file->Name = $request->FileName;
@@ -38,7 +36,7 @@ class FileController extends Controller {
           $file->Completed = 0;
         }
         $file->save();
-      }
+      
       $event = \teambernieny\Event::with('files')->find($request->event_id);
       return view('file.add')->with([
         'event' => $event
@@ -101,7 +99,7 @@ class FileController extends Controller {
         $file->user_id = $request->user_id;
       }else{
         $file->Completed = 0;
-        $file->user_id = "";
+        $file->user_id = null;
       }
       $file->save();
 

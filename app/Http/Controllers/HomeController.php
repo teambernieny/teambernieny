@@ -45,7 +45,7 @@ class HomeController extends Controller
 
     public function getAdminHome(){
 
-      $events = \teambernieny\Event::with('neighborhood')->where('id', '!=', '1')->orderby('Date', 'DESC')->get();
+      $events = \teambernieny\Event::with('neighborhood')->with('volunteers')->where('id', '!=', '1')->orderby('Date', 'DESC')->get();
       return view('adminhome')->with([
         'events' => $events
       ]);

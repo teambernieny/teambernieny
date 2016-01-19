@@ -12,11 +12,11 @@
                   <div>
                   <table class="table table-bordered table-condensed">
                   <tr class = 'header'>
-                    <td>Id</td><td>Name</td><td>Date</td><td>Neighborhood</td><td>Type</td>
+                    <td>Id</td><td>Name</td><td>Date</td><td>Neighborhood</td><td>Type</td><td>Attendees</td>
                   </tr>
                   @foreach($events as $event)
                   <tr>
-                    <td>{{$event->id}}</td><td>{{$event->Name}} </td><td>{{$event->Date}} </td><td>{{$event->neighborhood->Name}} </td><td>{{$event->Type}} </td>
+                    <td>{{$event->id}}</td><td>{{$event->Name}} </td><td>{{$event->Date}} </td><td>{{$event->neighborhood->Name}} </td><td>{{$event->Type}} </td><td>{{sizeof($event->volunteers)}}</td>
                     <td>
                       <form method='GET' action='/editEvent'>
                         <button class="btn btn-link" id="editlink" type="submit">Edit</button>

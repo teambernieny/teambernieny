@@ -2,7 +2,7 @@
 
 @section('contents')
 
-<input id="fileupload" type="file" name="files[]" data-url="/home/teambernieny/uploads/" multiple>
+<input id="fileupload" type="file" name="files[]" data-url="/server/php/" multiple>
 <script>
 $(function () {
     $('#fileupload').fileupload({
