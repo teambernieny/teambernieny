@@ -21,6 +21,7 @@
             <input type='hidden' name='_token' value='{{ csrf_token() }}'>
             <input type='hidden' name='event_id' value='{{$event->id}}'>
             <input type='hidden' name='file_id' value='{{$file->id}}'>
+            <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
           </form>
           @endif
           </td>
@@ -41,18 +42,18 @@
     <form method='POST' action="/editFile" id='form'>
       <div class = 'form-group'>
         <label for='FileName'>File Name:</label>
-        <input type='text' class='form-control' id='FileName' name='FileName' value='{{$file->Name}}'> <br>
+        <input type='text' class='form-control' id='FileName' name='FileName' value='{{$editfile->Name}}'> <br>
       </div>
       <div class = 'form-group'>
         <label for='TotalRows'>Total Number of Rows</label>
-        <input type='text' class='form-control' id='TotalRows' name='TotalRows' value='{{$file->TotalRows}}'> <br>
+        <input type='text' class='form-control' id='TotalRows' name='TotalRows' value='{{$editfile->TotalRows}}'> <br>
       </div>
       <div class = 'form-group'>
         <label for='CompletedRows'>Number of Rows Completed (defaults to zero)</label>
-        <input type='text' class='form-control' id='CompletedRows' name='CompletedRows' value='{{$file->CompletedRows}}'> <br>
+        <input type='text' class='form-control' id='CompletedRows' name='CompletedRows' value='{{$editfile->CompletedRows}}'> <br>
       </div>
       <div class='form-group'>
-          <?php if($file->Completed == "1"){
+          <?php if($editfile->Completed == "1"){
             $checked = 'checked';
           } else {
             $checked = '';
@@ -62,7 +63,7 @@
       <button class="btn btn-success" type="submit"  >Edit</button>
       <input type='hidden' name='_token' value='{{ csrf_token() }}'>
       <input type='hidden' name='event_id' value='{{$event->id}}'>
-      <input type='hidden' name='file_id' value='{{$file->id}}'>
+      <input type='hidden' name='file_id' value='{{$editfile->id}}'>
     </form>
   </div>
 </div>

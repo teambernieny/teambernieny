@@ -36,7 +36,7 @@ class FileController extends Controller {
           $file->Completed = 0;
         }
         $file->save();
-      
+
       $event = \teambernieny\Event::with('files')->find($request->event_id);
       return view('file.add')->with([
         'event' => $event
@@ -81,7 +81,7 @@ class FileController extends Controller {
       $file = \teambernieny\File::find($request->file_id);
       $event = \teambernieny\Event::with('files')->find($request->event_id);
       return view('file.edit')->with([
-        'file' => $file,
+        'editfile' => $file,
         'event' => $event
       ]);
     }
