@@ -15,25 +15,32 @@ class AttendeeController extends Controller {
 
 
 
-
+    // Returns view for looking to see if attenddees exist in the DB already
     public function getCheckAttendee(Request $request){
       $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer')->where('event_id', '=', $request->event_id)->get();
-
+      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
+      $event = \teambernieny\Event::find($request->event_id);
       return view('volunteer.attendee.check')->with([
         'message' => '',
-        'event_id' => $request->event_id,
+        'event' => $event,
         'eventvolunteers' => $eventvolunteers
         ]);
     }
 
+    //Returns attendance.add view if a volunteer has been found or attendee.add view if volunteer is not found
     public function postCheckAttendee(Request $request){
       $eventvolunteers = "" ;
       $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer')->where('event_id', '=', $request->event_id)->get();
 
       $event = \teambernieny\Event::find($request->event_id);
-      if ($request->Email != "") {
-        $volunteers = \teambernieny\Volunteer::distinct('id')->where('Email','=',$request->Email)->get();
+      if ($request->type == "Email"){
+        if ($request->Email != "") {
+          $volunteers = \teambernieny\Volunteer::distinct('id')->where('Email','=',$request->Email)->get();
+        }
+      } elseif ($request->type == "Phone") {
+        if ($request->Phone != ""){
+          $volunteers = \teambernieny\Volunteer::distinct('id')->where('Phone','=',$request->Phone)->get();
+        }
       }
       if(sizeof($volunteers) > 0){
           $volunteer = \teambernieny\Volunteer::with('neighborhood','events','commitments')->find($volunteers[0]->id);
@@ -50,14 +57,18 @@ class AttendeeController extends Controller {
         if ($request->Email == ""){
           $request->Email = " ";
         }
+        if ($request->Phone == ""){
+          $request->Phone = " ";
+        }
         return view('volunteer.attendee.add')->with([
           'email' => $request->Email,
+          'phone' => $request->Phone,
           'event'=> $event,
           'eventvolunteers' => $eventvolunteers
         ]);
       }
     }
-    ///If volunteer does not exist
+    ///If attenddee needs to be added to the DB - done with this method - automatically adds attendance as well
     public function postAddAttendee(Request $request){
 
       $volunteer = new \teambernieny\Volunteer();
@@ -103,15 +114,17 @@ class AttendeeController extends Controller {
 
       }
       $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer')->where('event_id', '=', $request->event_id)->get();
+      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
+      $event = \teambernieny\Event::find($request->event_id);
       $message = 'Volunteer Attendance Added!';
       return view('volunteer.attendee.check')->with([
         'message'=> $message,
-        'event_id'=>$request->event_id,
+        'event' => $event,
         'eventvolunteers' => $eventvolunteers
       ]);
     }
-/// If volunteer exists
+
+/// If volunteer exists, check any changes in demographics and then attendance added
     public function postAddAttendance(Request $request){
       $volunteercol = \teambernieny\Volunteer::with('neighborhood')->where('id','=',$request->volunteer_id)->get();
       $volunteer = $volunteercol->first();
@@ -149,14 +162,15 @@ class AttendeeController extends Controller {
         $message = 'Whoops! Volunteer Attendance already added... try further down in the file';
       }
       $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer')->where('event_id', '=', $request->event_id)->get();
+      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
+      $event = \teambernieny\Event::find($request->event_id);
       return view('volunteer.attendee.check')->with([
         'message'=> $message,
-        'event_id'=>$request->event_id,
+        'event'=>$event,
         'eventvolunteers' => $eventvolunteers
       ]);
     }
-
+    //If a volunteer's attendance needs to be edited, can be done so here
     public function getEditAttendance(Request $request) {
       //$volunteers = \teambernieny\Volunteer::with('commitments')->with('events')->where->get();
       $attendance = \teambernieny\EventVolunteers::with('volunteer')->with('event')->with('commitments')->find($request->attendance);
@@ -173,12 +187,19 @@ class AttendeeController extends Controller {
           }
         }
       }
+      $eventvolunteers = "" ;
+      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
+      $event = \teambernieny\Event::find($request->event_id);
       return view('volunteer.attendance.edit')->with([
         'attendance' => $attendance,
         'host' => $host,
-        'attend'=> $attend
+        'attend'=> $attend,
+        'event' => $event,
+        'eventvolunteers' => $eventvolunteers
       ]);
     }
+
+    // makes any adjustments to commitments or volunteer demographics as needed
     public function postEditAttendance(Request $request) {
       $attendance = \teambernieny\EventVolunteers::with('volunteer')->with('event')->with('commitments')->find($request->attendance);
       //$commitments = \teambernieny\Commitment::where('volunteer_id',"=",$attendance->volunteer->id)->where('event_id','=',$attendance->event->id)->get();
@@ -214,11 +235,11 @@ class AttendeeController extends Controller {
         }
 
       $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer')->where('event_id', '=', $attendance->event_id)->get();
-
+      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $attendance->event_id)->get();
+      $event = \teambernieny\Event::find($request->event_id);
       return view('volunteer.attendee.check')->with([
         'message' => '',
-        'event_id' => $attendance->event->id,
+        'event' => $event,
         'eventvolunteers' => $eventvolunteers
         ]);
 

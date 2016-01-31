@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('contents')
 <div class="container spark-screen">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading">Welcome to the Volunteer Hub Admin Dashboard</div>
 
                 <div class="panel-body">
                   <h2>Recent/Upcoming Events</h2>
@@ -25,11 +25,7 @@
                       </form>
                     </td>
                     <td>
-                      <form method='GET' action='/checkAttendee'>
-                        <button class="btn btn-link" id="editlink" type="submit">Add Attendees</button>
-                        <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-                        <input type='hidden' name='event_id' value='{{$event->id}}'>
-                      </form>
+                      @include('partials.addAttendees')
                     </td>
                     <td>
                       <form method='GET' action='/addFile'>

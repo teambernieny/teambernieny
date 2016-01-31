@@ -38,21 +38,7 @@ class EventController extends Controller {
       $event->Type = $request->EventType;
       $event->save();
 
-      $events = \teambernieny\Event::with('neighborhood')->orderby('Date', 'DESC')->get();
-      $eventrows = array();
-      foreach($events as $event){
-        $totalrows = 0;
-        foreach($event->files as $file){
-          $totalrows = $totalrows + $file->TotalRows;
-          $filenew = \teambernieny\File::with('user')->find($file->id);
-          $file = $filenew;
-        }
-        $eventrows[$event->id] = $totalrows;
-      }
-      return view('home')->with([
-        'events' => $events,
-        'eventrows' => $eventrows
-      ]);
+      return view('home');
     }
     public function getEdit(Request $request){
       $event_types = ['Canvassing','Flyering','Meeting','Petitioning','PhoneBanking','Other'];
@@ -84,10 +70,8 @@ class EventController extends Controller {
       $event->Type = $request->EventType;
       $event->neighborhood->save();
       $event->save();
-      $events = \teambernieny\Event::with('neighborhood')->orderby('Date', 'DESC')->get();
-      return view('adminhome')->with([
-      'events'=> $events
-      ]);
+
+      return view('adminhome');
     }
 
 ####################################------------------VIEWING THE DATA --------------------------#################################

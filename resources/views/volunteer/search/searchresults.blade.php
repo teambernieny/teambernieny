@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 
 @section('contents')
@@ -71,11 +71,20 @@
   <div id=dvData >
     <table class="table table-bordered table-condensed">
       <tr class = 'header'>
-        <td>FirstName</td><td>LastName</td><td>Email</td><td>Phone</td><td>Zip</td><td>Neighborhood</td><td>BadPhone</td><td>BadEmail</td><td>DoNotContact</td>
+        <td>FirstName</td><td>LastName</td><td>Email</td><td>Phone</td><td>Zip</td><td>Neighborhood</td><td>BadPhone</td><td>BadEmail</td><td>DoNotContact</td><td>ContactEvents</td><td>RSVPs</td><td>Last Contacted</td>
       </tr>
       @foreach($volunteers as $volunteer)
       <tr>
-        <td>{{$volunteer->FirstName}} </td><td>{{$volunteer->LastName}} </td><td>{{$volunteer->Email}} </td><td>{{$volunteer->Phone}} </td> <td>{{$volunteer->Zip}} </td><td>{{$volunteer->neighborhood->Name}} </td><td>{{$volunteer->BadPhone}} </td><td>{{$volunteer->BadEmail}} </td><td>{{$volunteer->DoNotContact}} </td>
+        <td>{{$volunteer->FirstName}} </td><td>{{$volunteer->LastName}} </td><td>{{$volunteer->Email}} </td><td>{{$volunteer->Phone}} </td> <td>{{$volunteer->Zip}} </td><td>{{$volunteer->neighborhood->Name}} </td><td>{{$volunteer->BadPhone}} </td>
+        <td>{{$volunteer->BadEmail}} </td><td>{{$volunteer->DoNotContact}} </td><td>{{sizeof($volunteer->contactevents)}}</td>
+        <td>@if(sizeof($volunteer->contactevents) > 0)
+            {{sizeof($volunteer->contactevents->where('RSVP',1))}}
+            @endif
+          </td>
+          <td> @if(sizeof($volunteer->contactevents) > 0)
+            {{$volunteer->contactevents[0]->Date}}
+          @endif
+        </td>
         <td>
         <form method='POST' action='/checkVolunteer'>
           <button class="btn btn-link" id="editlink" type="submit">Edit</button>

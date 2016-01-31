@@ -34,3 +34,9 @@ button {
 .list {
   text-align: left;
 }
+.navbar{
+  min-height: 100px;
+}
+#navbar{
+  margin-top: 25px;
+}

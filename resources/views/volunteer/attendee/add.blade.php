@@ -1,33 +1,9 @@
-@extends('layouts.app')
-
+@extends('layouts.sidebar')
+@extends('volunteer.attendance.base')
 
 @section('contents')
 
-<div class="row">
-  <div class ="col-md-6">
-    Event Attendees
-    <table class="table table-bordered table-condensed">
-    <tr class = 'header'>
-      <td>Name</td><td>Email</td>
-    </tr>
-      @if($eventvolunteers != "")
-      @foreach($eventvolunteers as $attendee)
-      <tr>
-        @if($attendee->volunteer != "")
-          <td>{{$attendee->volunteer->FirstName}} {{$attendee->volunteer->LastName}} </td><td>{{$attendee->volunteer->Email}} </td>
-          <td>
-          <form method='GET' action='/editAttendance'>
-            <button class="btn btn-link" id="editlink" type="submit">Edit</button>
-            <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-            <input type='hidden' name='attendance' value='{{$attendee->id}}'>
-          </form>
-          </td>
-       @endif
-      </tr>
-      @endforeach
-      @endif
-    </table>
-  </div>
+
   <div class="col-md-4 col-md-offset-1">
     <h2>Add Attendee</h2>
     <form method='POST' action="/addAttendee" id='form'>
@@ -41,11 +17,11 @@
       </div>
       <div class = 'form-group'>
         <label for='Email'>Email:</label>
-        <input type='text' class='form-control' id='Email' name='Email' value="{{$email}}"> <br>
+        <input type='text' class='form-control' id='Email' name='Email' value='{{$email}}'> <br>
       </div>
       <div class = 'form-group'>
         <label for='Phone'>Phone (no dashes):</label>
-        <input type='text' class='form-control' id='Phone' name='Phone'> <br>
+        <input type='text' class='form-control' id='Phone' name='Phone' value='{{$phone}}'> <br>
       </div>
       <div class = 'form-group'>
         <label for='Neighborhood'>Neighborhood:</label>
@@ -54,7 +30,7 @@
       <div class = 'form-group'>
         <label for='FirstName'>Street:</label>
         <input type='text' class='form-control' id='Street' name='Street' > <br>
-      <div>
+      </div>
       <div class = 'form-group'>
         <label for='FirstName'>Zip:</label>
         <input type='text' class='form-control' id='Zip' name='Zip' > <br>
@@ -74,7 +50,7 @@
       <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
     </form>
   </div>
-</div>
+
 
 
 @stop

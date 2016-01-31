@@ -1,32 +1,7 @@
-@extends('layouts.app')
-
+@extends('layouts.sidebar')
+@extends('volunteer.attendance.base')
 
 @section('contents')
-<div class="row">
-  <div class ="col-md-6">
-    Event Attendees
-    <table class="table table-bordered table-condensed">
-    <tr class = 'header'>
-      <td>Name</td><td>Email</td>
-    </tr>
-      @if($eventvolunteers != "")
-      @foreach($eventvolunteers as $attendee)
-      <tr>
-        @if($attendee->volunteer != "")
-          <td>{{$attendee->volunteer->FirstName}} {{$attendee->volunteer->LastName}} </td><td>{{$attendee->volunteer->Email}} </td>
-          <td>
-          <form method='GET' action='/editAttendance'>
-            <button class="btn btn-link" id="editlink" type="submit">Edit</button>
-            <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-            <input type='hidden' name='attendance' value='{{$attendee->id}}'>
-          </form>
-          </td>
-       @endif
-      </tr>
-      @endforeach
-      @endif
-    </table>
-  </div>
   <div class="col-md-4 col-md-offset-1">
       @if($message != "")
         <h2>{{$message}}</h2>
@@ -37,8 +12,18 @@
     <input class='form-control' id='Email' type='text' name='Email'> <br>
     <button class="btn btn-success" type="submit"  >Find</button>
     <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-    <input type='hidden' name='event_id' value='{{ $event_id }}'>
+    <input type='hidden' name='event_id' value='{{ $event->id }}'>
+    <input type='hidden' name ='type' value='Email'>
+  </form>
+  <h3>OR</h3>
+  <form class="form" method='POST' action="/checkAttendee" id='form'>
+    <label for='Phone'>Phone:</label>
+    <input class='form-control' id='Phone' type='text' name='Phone'> <br>
+    <button class="btn btn-success" type="submit"  >Find</button>
+    <input type='hidden' name ='_token' value='{{ csrf_token() }}'>
+    <input type='hidden' name ='event_id' value='{{ $event->id }}'>
+    <input type='hidden' name ='type' value='Phone'>
   </form>
 </div>
-</div>
+
 @stop

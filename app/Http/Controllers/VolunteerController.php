@@ -142,15 +142,23 @@ class VolunteerController extends Controller {
     }
     public function postSearchZip(Request $request){
     if (($request->zips != "") && ($request->neighborhoods != "")){
-      $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->whereIn('neighborhood_id', $request->neighborhoods)->orwhereIn('Zip',$request->zips)->get();
+      $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->whereIn('neighborhood_id', $request->neighborhoods)->orwhereIn('Zip',$request->zips)->get();
     } else if ($request->neighborhoods != ""){
-      $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->whereIn('neighborhood_id', $request->neighborhoods)->get();
+      $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->whereIn('neighborhood_id', $request->neighborhoods)->get();
     } else {
-      $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->whereIn('Zip',$request->zips)->get();
+      $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->whereIn('Zip',$request->zips)->get();
 
     }
-      return view('volunteer.search.searchresults')->with([
-        'volunteers'=> $volunteers]);
+
+    foreach($volunteers as $volunteer) {
+      if (sizeof($volunteer->contactevents) > 0) {
+        $volunteer->contactevents->sortByDesc('Date');
+      }
+    }
+    $volunteers->sortBy(sizeof('contactevents'));
+    return view('volunteer.search.searchresults')->with([
+        'volunteers'=> $volunteers
+      ]);
     }
 
     public function getSearchName(Request $request){
@@ -160,21 +168,23 @@ class VolunteerController extends Controller {
     public function postSearchName(Request $request){
       if($request->type == 'Name'){
         if(($request->FirstName != "") && ($request->LastName != "")){
-          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
         } elseif($request->FirstName != ""){
-          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('FirstName','=',$request->FirstName)->get();
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('FirstName','=',$request->FirstName)->get();
         } elseif($request->LastName != ""){
-          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('LastName','=',$request->LastName)->get();
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('LastName','=',$request->LastName)->get();
         } else {
-          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
         }
       } else if ($request->type == 'Email'){
-        $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('Email','=',$request->Email)->get();
+        $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('Email','=',$request->Email)->get();
 
       } else if ($request->type == 'Phone'){
-        $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('Phone','=',$request->Phone)->get();
+        $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('Phone','=',$request->Phone)->get();
 
       }
+      $volunteers->sortBy(sizeof('contactevents'));
+
       return view('volunteer.search.searchresults')->with([
         'volunteers'=> $volunteers]);
     }
@@ -204,8 +214,8 @@ class VolunteerController extends Controller {
       ]);
     }
     public function getAll(Request $request){
-      $volunteers = \teambernieny\Volunteer::with('neighborhood')->orderby('FirstName')->get();
+      $volunteers = \teambernieny\Volunteer::with('neighborhood')->with('contactevents')->orderby('FirstName')->get();
 
-      return view('volunteer.search..all')->with(['volunteers' => $volunteers]);
+      return view('volunteer.search.all')->with(['volunteers' => $volunteers]);
     }
 }

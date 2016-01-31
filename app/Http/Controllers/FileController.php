@@ -60,22 +60,8 @@ class FileController extends Controller {
       $file->Completed = "1";
       $file->user_id = $request->user_id;
       $file->save();
-      $twoweeks = time() - (7 * 24 * 60 * 60 * 2);
-      $events = \teambernieny\Event::with('neighborhood')->with('files')->where('Date','>', date('Y-m-d',$twoweeks))->where('id','!=','1')->orderby('Date', 'DESC')->get();
-      $eventrows = array();
-      foreach($events as $event){
-        $totalrows = 0;
-        foreach($event->files as $file){
-          $totalrows = $totalrows + $file->TotalRows;
-          $filenew = \teambernieny\File::with('user')->find($file->id);
-          $file = $filenew;
-        }
-        $eventrows[$event->id] = $totalrows;
-      }
-      return view('home')->with([
-        'events' => $events,
-        'eventrows' => $eventrows
-      ]);
+
+      return view('home');
     }
     public function getEdit(Request $request){
       $file = \teambernieny\File::find($request->file_id);
@@ -108,8 +94,9 @@ class FileController extends Controller {
         'event' => $event
       ]);
     }
-      public function getUpload(Request $request){
-        return view('file.upload');
-      }
+    
+    public function getUpload(Request $request){
+      return view('file.upload1');
+    }
 
 }
