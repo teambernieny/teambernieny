@@ -2,14 +2,25 @@
 
 
 @section('contents')
-
 <h1>Enter a file of Contact Events to process</h1>
 File format (with header row) should be: <br>
-FirstName,LastName,Zip,Phone,County,Email,Caller,Called,PickedUp, Texted,VM,
-RSVP,Event,Date,DoNotContact,BadPhone,Comments
+<div class="row">
+  <div class="col-md-9 ">
+    <table class='table-bordered table-condensed'>
+      <tr>
+        <th>FirstName</th> <th>LastName</th><th>Zip</th><th>Phone</th><th>County</th><th>Email</th><th>Caller</th><th>Called</th><th>PickedUp</th><th>Texted</th><th>VM</th>
+        <th>RSVP</th><th>Event</th><th>Date</th><th>DoNotContact</th><th>BadPhone</th><th>Comment</th>
+      </tr>
+      <tr>
+        <td>Bernie</td> <td>Sanders</td><td>05342</td><td>1234567890</td><td>Burlington</td><td>wecometowin@gmail.com</td><td>Ella</td><td>Y</td><td>Y</td><td>N</td><td>N</td>
+        <td>Y</td><td>Iowa Victory Celebration</td><td>02/01/2016</td><td></td><td></td><td>Will bring wife, Jane.</td>
+      </tr>
+    </table>
+  </div>
+</div>
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-      {{ $message }}
+      <h4 id="message">{{ $message }}</h4>
       <form class="form" method='POST' action="/processContactEvents">
         <div class="form-group">
           <label for="FileName">File Name</label>

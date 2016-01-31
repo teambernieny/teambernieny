@@ -111,6 +111,11 @@ return [
     'log' => env('APP_LOG', 'single'),
 
     /*
+     This is the filepath for uploaded files for processingContactEvents
+    */
+    'filepath' => '/Applications/MAMP/htdocs/uploads/',
+
+    /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------

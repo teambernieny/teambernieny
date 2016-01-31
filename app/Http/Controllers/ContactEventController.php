@@ -5,6 +5,7 @@ namespace teambernieny\Http\Controllers;
 use teambernieny\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use Config;
 
 class ContactEventController extends Controller {
 
@@ -23,7 +24,7 @@ class ContactEventController extends Controller {
     public function postProcess(Request $request){
 
       ini_set('auto_detect_line_endings',TRUE);
-      $file = fopen("/Applications/MAMP/htdocs/uploads/".$request->FileName,"r");
+      $file = fopen(Config::get('app.filepath').$request->FileName,"r");
 
       ## Get the header line = FirstName(0),LastName(1),Zip(2),Phone(3),County(4),Email(5),Caller(6),Called(7),PickedUP(8)
       ## Texted(9),VM(10),RSVP(11),Event(12),Date(13),DoNotContact(14),BadPhone(15),Comments(16)
@@ -138,7 +139,7 @@ class ContactEventController extends Controller {
 
 
       return view('contactevent.process')->with([
-        'message' => "Processed"
+        'message' => "File Processed"
       ]);;
     }
 }

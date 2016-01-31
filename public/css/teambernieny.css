@@ -40,3 +40,6 @@ button {
 #navbar{
   margin-top: 25px;
 }
+#message{
+  color: red; 
+}
