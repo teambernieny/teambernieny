@@ -37,7 +37,7 @@ class ContactEventController extends Controller {
 
         #; Find Volunteer or add if does not exist
         if($data[3] != ""){ // check first by phone number
-          $volunteers = \teambernieny\Volunteer::where('Email','=',$data[3])->get();
+          $volunteers = \teambernieny\Volunteer::where('Phone','=',$data[3])->get();
         }
 
         if(sizeof($volunteers) == 0){

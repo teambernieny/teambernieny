@@ -113,7 +113,7 @@ return [
     /*
      This is the filepath for uploaded files for processingContactEvents
     */
-    'filepath' => '/Applications/MAMP/htdocs/uploads/',
+    'filepath' => env('APP_FILEPATH','/Applications/MAMP/htdocs/uploads/'),
 
     /*
     |--------------------------------------------------------------------------
