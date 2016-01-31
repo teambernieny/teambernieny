@@ -5,6 +5,7 @@ namespace teambernieny\Http\Controllers;
 use teambernieny\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use Redirect;
 
 class VolunteerController extends Controller {
 
@@ -100,7 +101,7 @@ class VolunteerController extends Controller {
       $volunteer->neighborhood->save();
       $volunteer->save();
 
-      return view('volunteer.check')->with('message','Volunteer Edited!');
+      return Redirect::back();
 
     }
 
