@@ -22,9 +22,8 @@ class VolunteerController extends Controller {
       if ($request->Email != "") {
         $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('Email','=',$request->Email)->get();
         if(sizeof($volunteers) > 0){
-          return view('volunteer.edit')->with([
-            'volunteer' => $volunteers[0]
-          ]);
+        return $this->returnEdit($volunteers[0]);
+
         }
       }
       if ($request->Email == ""){
@@ -38,9 +37,7 @@ class VolunteerController extends Controller {
     public function postAdd(Request $request){
       $volunteers = \teambernieny\Volunteer::where('Email','=',$request->Email)->get();
       if(sizeof($volunteers) > 0){
-        return view('volunteer.edit')->with([
-          'volunteer' => $volunteers[0]
-        ]);
+        return $this->returnEdit($volunteers[0]);
       } else {
 
         $volunteer = new \teambernieny\Volunteer();
@@ -105,6 +102,14 @@ class VolunteerController extends Controller {
 
     }
 
+    private function returnEdit(\teambernieny\Volunteer $volunteer){
+      $volunteers = \teambernieny\Volunteer::with('contactevents')->with('neighborhood')->where('Email','=',$volunteer->Email)->get();
+      $volunteer = $volunteers[0];
+
+      return view('volunteer.edit')->with([
+        'volunteer' => $volunteer
+      ]);
+    }
 
 
 

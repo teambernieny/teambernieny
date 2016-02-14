@@ -54,13 +54,24 @@
       </td>
     </tr>
   </table>
-
-
-
-
-
-
     </form>
 
+</div>
+<div class='row'>
+  <div class='col-md-4'>
+    <h2>Contact Events</h2>
+  </div>
+  <div class='col-md-9 col-md-offset-1'>
+      <table class="table table-bordered table-condensed">
+        <tr class='header'>
+          <td>Date</td><td>Caller</td><td>Purpose</td><td>RSVP</td><td>Call</td><td>VoiceMail</td><td>Text</td><td>Email</td><td>Comment</td>
+        </tr>
+        @foreach($volunteer->contactevents as $contactevent)
+        <tr class='active'>
+          <td>{{$contactevent->Date}}</td><td>{{$contactevent->Caller}}</td><td>{{$contactevent->Purpose}}</td><td>{{$contactevent->RSVP}}</td><td>{{$contactevent->Call}}</td><td>{{$contactevent->VoiceMail}}</td><td>{{$contactevent->Text}}</td><td>{{$contactevent->Email}}</td><td>{{$contactevent->Comment}}</td>
+        </tr>
+        @endforeach
+      </table>
+  </div>
 </div>
 @stop

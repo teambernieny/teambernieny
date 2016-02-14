@@ -10,7 +10,7 @@ class Contactevent extends Model
     # Contactevent performed by a User
     return $this->belongsTo('\teambernieny\User');
   }
-  public function volunteers() {
+  public function volunteer() {
     # Volunteer contacted
     return $this->belongsTo('\teambernieny\Volunteer');
   }

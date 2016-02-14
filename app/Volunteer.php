@@ -32,7 +32,7 @@ class Volunteer extends Model
   public function contactevents() {
      return $this->hasMany('\teambernieny\Contactevent');
   }
-  
+
   public function commitments() {
      return $this->hasManyThrough('\teambernieny\Commitment', 'teambernieny\EventVolunteers');
   }
