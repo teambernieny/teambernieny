@@ -22,7 +22,7 @@ class VolunteerController extends Controller {
       if ($request->Email != "") {
         $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->where('Email','=',$request->Email)->get();
         if(sizeof($volunteers) > 0){
-        return $this->returnEdit($volunteers[0]);
+        return $this->returnEdit($volunteers[0], $request->search_id);
 
         }
       }
@@ -37,7 +37,7 @@ class VolunteerController extends Controller {
     public function postAdd(Request $request){
       $volunteers = \teambernieny\Volunteer::where('Email','=',$request->Email)->get();
       if(sizeof($volunteers) > 0){
-        return $this->returnEdit($volunteers[0]);
+        return $this->returnEdit($volunteers[0],"");
       } else {
 
         $volunteer = new \teambernieny\Volunteer();
@@ -97,17 +97,49 @@ class VolunteerController extends Controller {
       }
       $volunteer->neighborhood->save();
       $volunteer->save();
-
-      return Redirect::back();
-
+      if($request->search_id == ""){
+        return Redirect::back();
+      } else {
+        $search = \teambernieny\Search::find($request->search_id);
+        $parameters = explode(",", $search->Parameters);
+        if ($search->Type == "ZN"){
+          $zips = array();
+          $neighborhoods = array();
+          foreach($parameters as $parameter){
+            if ($parameter > 10000){
+              array_push($zips, $parameter);
+            } else{
+              array_push($neighborhoods, $parameter);
+            }
+          }
+        $request->zips = $zips;
+        $request->neighborhoods = $neighborhoods;
+        return $this->postSearchZip($request);
+        }else{
+        if($search->Type = "Name"){
+          $request->FirstName = $parameters[0];
+          $request->LastName = $parameters[1];
+          $request->type = $search->Type;
+        }elseif($search->Type == "Email"){
+          $request->Email = $parameters[0];
+          $request->type = $search->Type;
+        }elseif($search->Phone == "Phone"){
+          $request->Phone = $parameters[0];
+          $request->type = $search->Type;
+        }
+        return $this->postSearchName($request);
+      }
     }
 
-    private function returnEdit(\teambernieny\Volunteer $volunteer){
+  }
+
+    private function returnEdit(\teambernieny\Volunteer $volunteer, $search_id){
       $volunteers = \teambernieny\Volunteer::with('contactevents')->with('neighborhood')->where('Email','=',$volunteer->Email)->get();
       $volunteer = $volunteers[0];
 
       return view('volunteer.edit')->with([
-        'volunteer' => $volunteer
+        'volunteer' => $volunteer,
+        'search_id' => $search_id
       ]);
     }
 
@@ -153,19 +185,16 @@ class VolunteerController extends Controller {
       $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->whereIn('neighborhood_id', $request->neighborhoods)->get();
     } else {
       $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->whereIn('Zip',$request->zips)->get();
-
+    }
+    if($request->search_id == ""){
+      $search=$this->saveSearch($request, "ZN");
+    } else {
+      $search = \teambernieny\Search::find($request->search_id);
+      $search->save();
     }
 
-    foreach($volunteers as $volunteer) {
-      if (sizeof($volunteer->contactevents) > 0) {
-        $volunteer->contactevents->sortByDesc('Date');
-      }
-    }
-    $volunteers->sortBy(sizeof('contactevents'));
-    return view('volunteer.search.searchresults')->with([
-        'volunteers'=> $volunteers
-      ]);
-    }
+    return $this->returnSearchResults($volunteers, $search->id);
+  }
 
     public function getSearchName(Request $request){
 
@@ -177,51 +206,75 @@ class VolunteerController extends Controller {
           $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
         } elseif($request->FirstName != ""){
           $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('FirstName','=',$request->FirstName)->get();
+
         } elseif($request->LastName != ""){
           $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('LastName','=',$request->LastName)->get();
+
         } else {
           $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('FirstName','=',$request->FirstName)->where('LastName','=',$request->LastName)->get();
+
         }
-      } else if ($request->type == 'Email'){
-        $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('Email','=',$request->Email)->get();
-
-      } else if ($request->type == 'Phone'){
-        $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('Phone','=',$request->Phone)->get();
-
-      }
-      $volunteers->sortBy(sizeof('contactevents'));
-
-      return view('volunteer.search.searchresults')->with([
-        'volunteers'=> $volunteers]);
-    }
-
-    public function getSearchEvent(Request $request){
-
-      return view('volunteer.search.event');
-    }
-    public function postSearchEvent(Request $request){
-
-      if($request->type == 'Name'){
-        $events = \teambernieny\Event::with('volunteers')->where('Name', '=', $request->EventName)->get();
-        $volunteers = $events[0]->volunteers;
-
-      } elseif ($request->type == 'Date'){
-        $events = \teambernieny\Event::with('volunteers')->where('Date', '=', $request->EventDate)->get();
-        $x=0;
-        foreach($events as $event){
-          foreach($events->volunteers as $volunteer){
-            $volunteers[$x] = $volunteers;
-            $x=$x+1;
-          }
+        if($request->search_id == ""){
+          $search = $this->saveSearch($request,"Name");
+        } else {
+          $search = \teambernieny\Search::find($request->search_id);
+          $search->save();
         }
+      } else {
+        if ($request->type == 'Email'){
+            $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('Email','=',$request->Email)->get();
+        } elseif ($request->type == 'Phone'){
+          $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('Phone','=',$request->Phone)->get();
+        }
+        if($request->search_id == ""){
+          $search = $this->saveSearch($request,$request->type);
+        }else{
+          $search = \teambernieny\Search::find($request->search_id);
+          $search->save();
+        }
+        return $this->returnSearchResults($volunteers,$search->id);
       }
-      return view('volunteer.search.searchresults')->with([
-        'volunteers' => $volunteers
-      ]);
     }
+
     public function getAll(Request $request){
       $volunteers = \teambernieny\Volunteer::with('neighborhood')->with('contactevents')->orderby('FirstName')->get();
 
       return view('volunteer.search.all')->with(['volunteers' => $volunteers]);
     }
+    private function returnSearchResults(\Illuminate\Database\Eloquent\Collection $volunteers, $search_id){
+
+      $volunteers->sortBy(sizeof('contactevents'));
+
+      return view('volunteer.search.searchresults')->with([
+        'volunteers' => $volunteers,
+        'search_id' => $search_id
+      ]);
+    }
+    private function saveSearch(Request $request, $type){
+      $search = new \teambernieny\Search();
+      $search->Type = $type;
+      if($type == "Name"){
+        $parameters=$request->FirstName.",".$request->LastName;
+      }
+      if($type == "Email"){
+        $parameters=$request->Email;
+      }
+      if($type == "Phone"){
+        $parameters=$request->Phone;
+      }
+      if($type == "ZN"){
+        if(($request->zips != "")&&($request->neighborhoods != "")){
+          $parameters=implode(",",$request->zips).",".implode(",",$request->neighborhoods);
+        } elseif($request->zips != ""){
+          $parameters=implode(",",$request->zips);
+        } elseif($request->neighborhoods != ""){
+          $parameters=implode(",",$request->neighborhoods);
+        }
+      }
+      $search->Parameters = $parameters;
+      $search->user_id = $request->user_id;
+      $search->save();
+      return $search;
+    }
+
 }

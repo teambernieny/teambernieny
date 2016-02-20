@@ -14,11 +14,8 @@ class FileController extends Controller {
     }
 
     public function getAdd(Request $request){
+      return $this->returnfileAdd($request);
 
-      $event = \teambernieny\Event::with('files')->find($request->event_id);
-      return view('file.add')->with([
-        'event' => $event
-      ]);
     }
     public function postAdd(Request $request){
         $file = new \teambernieny\File();
@@ -36,11 +33,7 @@ class FileController extends Controller {
           $file->Completed = 0;
         }
         $file->save();
-
-      $event = \teambernieny\Event::with('files')->find($request->event_id);
-      return view('file.add')->with([
-        'event' => $event
-      ]);
+        return $this->returnfileAdd($request);
     }
     public function postComplete(Request $request){
       $file = \teambernieny\File::find($request->file_id);
@@ -49,10 +42,7 @@ class FileController extends Controller {
       $file->user_id = $request->user_id;
       $file->save();
 
-      $event = \teambernieny\Event::with('files')->find($request->event_id);
-      return view('file.add')->with([
-        'event' => $event
-      ]);
+      return $this->returnfileAdd($request);
     }
     public function postCompleteReg(Request $request){
       $file = \teambernieny\File::find($request->file_id);
@@ -89,14 +79,17 @@ class FileController extends Controller {
       }
       $file->save();
 
+      return $this->returnfileAdd($request);
+    }
+
+    public function getUpload(Request $request){
+      return view('file.upload1');
+    }
+
+    private function returnfileAdd(Request $request){
       $event = \teambernieny\Event::with('files')->find($request->event_id);
       return view('file.add')->with([
         'event' => $event
       ]);
     }
-    
-    public function getUpload(Request $request){
-      return view('file.upload1');
-    }
-
 }

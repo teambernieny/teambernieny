@@ -82,7 +82,7 @@
             @endif
           </td>
           <td> @if(sizeof($volunteer->contactevents) > 0)
-            {{$volunteer->contactevents[0]->Date}}
+            {{$volunteer->contactevents->max('Date')}}
           @endif
         </td>
         <td>
@@ -91,6 +91,7 @@
           <input type='hidden' name='_token' value='{{ csrf_token() }}'>
           <input type='hidden' name='Email' value='{{$volunteer->Email}}'>
           <input type='hidden' name='type' value='Check'>
+          <input type='hidden' name='search_id' value='{{$search_id}}'>
         </form>
         </td>
       </tr>

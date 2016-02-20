@@ -17,14 +17,7 @@ class AttendeeController extends Controller {
 
     // Returns view for looking to see if attenddees exist in the DB already
     public function getCheckAttendee(Request $request){
-      $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
-      $event = \teambernieny\Event::find($request->event_id);
-      return view('volunteer.attendee.check')->with([
-        'message' => '',
-        'event' => $event,
-        'eventvolunteers' => $eventvolunteers
-        ]);
+      return $this->returnCheck($request, "");
     }
 
     //Returns attendance.add view if a volunteer has been found or attendee.add view if volunteer is not found
@@ -72,103 +65,28 @@ class AttendeeController extends Controller {
     public function postAddAttendee(Request $request){
 
       $volunteer = new \teambernieny\Volunteer();
+      $neighborhood_id=$this->checkNeighborhood($request);
+      $this->saveVolunteer($request, $volunteer, $neighborhood_id);
+      $this->addAttendance($request, $volunteer);
 
-      $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
-      if (sizeof($neighborhoods) > 0){
-        $neighborhood = $neighborhoods->first();
-      } else {
-        $neighborhood = new \teambernieny\Neighborhood();
-        $neighborhood->Name = $request->Neighborhood;
-        $neighborhood->Borough = $request->City;
-        $neighborhood->save();
-
-      }
-      $neighborhood_id=$neighborhood->id;
-      $volunteer->FirstName = $request->FirstName;
-      $volunteer->LastName = $request->LastName;
-      $volunteer->Email = $request->Email;
-      $volunteer->Phone = $request->Phone;
-      $volunteer->Zip = $request->Zip;
-      $volunteer->neighborhood_id = $neighborhood_id;
-      $volunteer->Street = $request->Street;
-      $volunteer->City = $request->City;
-      $volunteer->neighborhood->save();
-      $volunteer->user_id = $request->user_id;
-      $volunteer->save();
-
-
-      $attendance = new \teambernieny\EventVolunteers();
-      $attendance->event_id = $request->event_id;
-      $attendance->volunteer_id = $volunteer->id;
-      $attendance->Relationship = "Attendee";
-      $attendance->save();
-
-
-      if (sizeof($request->commitments) > 0){
-        foreach($request->commitments as $commitment){
-          $newcommitment = new \teambernieny\Commitment();
-          $newcommitment->event_volunteers_id=$attendance->id;
-          $newcommitment->Type = $commitment;
-          $newcommitment->save();
-        }
-
-      }
-      $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
-      $event = \teambernieny\Event::find($request->event_id);
       $message = 'Volunteer Attendance Added!';
-      return view('volunteer.attendee.check')->with([
-        'message'=> $message,
-        'event' => $event,
-        'eventvolunteers' => $eventvolunteers
-      ]);
+      return $this->returnCheck($request, $message);
     }
 
 /// If volunteer exists, check any changes in demographics and then attendance added
     public function postAddAttendance(Request $request){
       $volunteercol = \teambernieny\Volunteer::with('neighborhood')->where('id','=',$request->volunteer_id)->get();
       $volunteer = $volunteercol->first();
-      $volunteer->FirstName = $request->FirstName;
-      $volunteer->LastName = $request->LastName;
-      $volunteer->Email = $request->Email;
-      $volunteer->Phone = $request->Phone;
-      $volunteer->Zip = $request->Zip;
-      $volunteer->neighborhood->Name = $request->Neighborhood;
-      $volunteer->Street = $request->Street;
-      $volunteer->neighborhood->Borough = $request->City;
-      $volunteer->City = $request->City;
-      $volunteer->neighborhood->save();
-      $volunteer->save();
+      $this->saveVolunteer($request, $volunteer, $volunteer->neighborhood->id);
 
       $attendances = \teambernieny\EventVolunteers::where('event_id','=',$request->event_id)->where('volunteer_id','=',$request->volunteer_id)->get();
       if(sizeof($attendances) == 0){
-        $attendance = new \teambernieny\EventVolunteers();
-        $attendance->event_id = $request->event_id;
-        $attendance->volunteer_id = $volunteer->id;
-        $attendance->Relationship = "Attendee";
-        $attendance->save();
-
-        if (sizeof($request->commitments) > 0){
-          foreach($request->commitments as $commitment){
-            $newcommitment = new \teambernieny\Commitment();
-            $newcommitment->event_volunteers_id = $attendance->id;
-            $newcommitment->Type = $commitment;
-            $newcommitment->save();
-          }
-
-        }
+        $this->addAttendance($request,$volunteer);
         $message = 'Volunteer Attendance Added!';
       } else {
         $message = 'Whoops! Volunteer Attendance already added... try further down in the file';
       }
-      $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
-      $event = \teambernieny\Event::find($request->event_id);
-      return view('volunteer.attendee.check')->with([
-        'message'=> $message,
-        'event'=>$event,
-        'eventvolunteers' => $eventvolunteers
-      ]);
+      return $this->returnCheck($request, $message);
     }
     //If a volunteer's attendance needs to be edited, can be done so here
     public function getEditAttendance(Request $request) {
@@ -229,20 +147,60 @@ class AttendeeController extends Controller {
                 $addcommitment->event_volunteers_id = $attendance->id;
                 $addcommitment->save();
               }
-
-
             }
+            return $this->returnCheck($request, "");
         }
 
+
+
+    }
+    private function saveVolunteer(Request $request, \teambernieny\Volunteer $volunteer, $neighborhood_id){
+      $volunteer->FirstName = $request->FirstName;
+      $volunteer->LastName = $request->LastName;
+      $volunteer->Email = $request->Email;
+      $volunteer->Phone = $request->Phone;
+      $volunteer->Zip = $request->Zip;
+      $volunteer->neighborhood_id = $neighborhood_id;
+      $volunteer->Street = $request->Street;
+      $volunteer->City = $request->City;
+      $volunteer->save();
+    }
+    private function checkNeighborhood(Request $request){
+      $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
+      if (sizeof($neighborhoods) > 0){
+        $neighborhood = $neighborhoods->first();
+      } else {
+        $neighborhood = new \teambernieny\Neighborhood();
+        $neighborhood->Name = $request->Neighborhood;
+        $neighborhood->Borough = $request->City;
+        $neighborhood->save();
+      }
+      return $neighborhood->id;
+    }
+    private function addAttendance(Request $request, \teambernieny\Volunteer $volunteer){
+      $attendance = new \teambernieny\EventVolunteers();
+      $attendance->event_id = $request->event_id;
+      $attendance->volunteer_id = $volunteer->id;
+      $attendance->Relationship = "Attendee";
+      $attendance->save();
+
+      if (sizeof($request->commitments) > 0){
+        foreach($request->commitments as $commitment){
+          $newcommitment = new \teambernieny\Commitment();
+          $newcommitment->event_volunteers_id=$attendance->id;
+          $newcommitment->Type = $commitment;
+          $newcommitment->save();
+        }
+      }
+    }
+    private function returnCheck(Request $request, $message){
       $eventvolunteers = "" ;
-      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $attendance->event_id)->get();
+      $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
       $event = \teambernieny\Event::find($request->event_id);
       return view('volunteer.attendee.check')->with([
-        'message' => '',
+        'message' => $message,
         'event' => $event,
         'eventvolunteers' => $eventvolunteers
         ]);
-
     }
-
 }

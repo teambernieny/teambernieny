@@ -20,23 +20,11 @@ class EventController extends Controller {
       return view('event.add')->with('event_types',$event_types);
     }
     public function postAdd(Request $request){
-      $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
-      if (sizeof($neighborhoods) > 0){
-        $neighborhood = $neighborhoods->first();
-        $neighborhood_id = $neighborhood->id;
-      } else {
-        $neighborhood = new \teambernieny\Neighborhood();
-        $neighborhood->Name = $request->Neighborhood;
-        $neighborhood->Borough = $request->City;
-        $neighborhood->save();
-        $neighborhood_id = $neighborhood->id;
-      }
+      $neighborhood_id = $this->checkNeighborhood($request);
+
       $event = new \teambernieny\Event();
-      $event->Name = $request->EventName;
-      $event->Date = $request->EventDate;
-      $event->neighborhood_id = $neighborhood_id;
-      $event->Type = $request->EventType;
-      $event->save();
+      $this->saveEvent($request, $event, $neighborhood_id);
+
 
       return view('home');
     }
@@ -51,6 +39,16 @@ class EventController extends Controller {
 
     }
     public function postEdit(Request $request){
+      $neighborhood_id = $this->checkNeighborhood($request);
+      $eventcol = \teambernieny\Event::with('neighborhood')->where('id','=',$request->event_id)->get();
+      $event = $eventcol->first();
+      $this->saveEvent($request, $event, $neighborhood_id);
+
+      return view('adminhome');
+    }
+
+
+    private function checkNeighborhood(Request $request){
       $neighborhoods = \teambernieny\Neighborhood::select('id')->where('Name','=',$request->Neighborhood)->get();
       if (sizeof($neighborhoods) > 0){
         $neighborhood = $neighborhoods->first();
@@ -62,18 +60,16 @@ class EventController extends Controller {
         $neighborhood->save();
         $neighborhood_id = $neighborhood->id;
       }
-      $eventcol = \teambernieny\Event::with('neighborhood')->where('id','=',$request->event_id)->get();
-      $event = $eventcol->first();
+      return $neighborhood_id;
+    }
+    private function saveEvent(Request $request, \teambernieny\Event $event, $neighborhood_id){
       $event->Name = $request->EventName;
       $event->Date = $request->EventDate;
       $event->neighborhood_id = $neighborhood_id;
       $event->Type = $request->EventType;
       $event->neighborhood->save();
       $event->save();
-
-      return view('adminhome');
     }
-
 ####################################------------------VIEWING THE DATA --------------------------#################################
 
   public function getSearchNeighborhood(Request $request){

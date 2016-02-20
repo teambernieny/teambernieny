@@ -31,4 +31,8 @@ class User extends Authenticatable
     public function files() {
        return $this->hasMany('\teambernieny\File');
     }
+
+    public function searches() {
+       return $this->hasMany('\teambernieny\Search');
+    }
 }

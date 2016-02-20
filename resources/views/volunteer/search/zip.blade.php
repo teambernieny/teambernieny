@@ -58,6 +58,7 @@
       <div class='row'>
         <input type='hidden' name='_token' value='{{ csrf_token() }}'>
         <button class="btn btn-success" type="submit" >Get List</button>
+        <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
       </div>
     </div>
     </form>

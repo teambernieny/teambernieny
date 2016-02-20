@@ -14,13 +14,8 @@
 
 Route::group(['middleware' => ['web']], function () {
   Route::group(['middleware' => 'auth'], function () {
-    # Landing page
-    Route::get('/', 'DataController@gethome');
 
 
-    # Search Home
-    Route::get('/search', 'SearchController@getSearch');
-    Route::post('/search', 'SearchController@postSearch');
 
     # View volunteers
     Route::get('/volSearchZip', 'VolunteerController@getSearchZip');
@@ -80,6 +75,7 @@ Route::group(['middleware' => ['web']], function () {
     #Process Contact Event Files
     Route::get('/processContactEvents','ContactEventController@getProcess');
     Route::post('/processContactEvents','ContactEventController@postProcess');
+    Route::post('/processCityContactEvents','ContactEventController@postCityProcess');
 
 
 

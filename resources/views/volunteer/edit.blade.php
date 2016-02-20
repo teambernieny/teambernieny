@@ -51,6 +51,7 @@
         <button class="btn btn-success" type="submit"  >Submit</button>
         <input type='hidden' name='_token' value='{{ csrf_token() }}'>
         <input type='hidden' name = 'volunteer_id' value="{{$volunteer->id}}">
+        <input type='hidden' name = 'search_id' value='{{$search_id}}'>
       </td>
     </tr>
   </table>

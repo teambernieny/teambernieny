@@ -2,7 +2,7 @@
 
 
 @section('contents')
-<h1>Search Volunteers By Name</h1>
+<h1>Search for a Volunteer</h1>
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
     <form class="form" method='POST' action="/volSearchName">
@@ -19,6 +19,7 @@
       <button class="btn btn-success" type="submit"  >Search</button>
       <input type='hidden' name='_token' value='{{ csrf_token() }}'>
       <input type='hidden' name='type' value='Name'>
+      <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
     </div>
     </form>
     <form class="form" method='POST' action="/volSearchName">
@@ -31,6 +32,7 @@
           <button class="btn btn-success" type="submit"  >Search </button>
           <input type='hidden' name='_token' value='{{ csrf_token() }}'>
           <input type='hidden' name='type' value='Email'>
+          <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
         </div>
       </form>
       <form class="form" method='POST' action="/volSearchName">
@@ -43,6 +45,7 @@
           <button class="btn btn-success" type="submit"  >Search</button>
           <input type='hidden' name='_token' value='{{ csrf_token() }}'>
           <input type='hidden' name='type' value='Phone'>
+          <input type='hidden' name='user_id' value='{{Auth::user()->id}}'>
         </div>
       </form>
   </div>
