@@ -226,14 +226,17 @@ class VolunteerController extends Controller {
         } elseif ($request->type == 'Phone'){
           $volunteers = \teambernieny\Volunteer::distinct('id')->with('neighborhood')->with('contactevents')->where('Phone','=',$request->Phone)->get();
         }
-        if($request->search_id == ""){
+
+     }
+     if($request->search_id == ""){
           $search = $this->saveSearch($request,$request->type);
         }else{
           $search = \teambernieny\Search::find($request->search_id);
           $search->save();
         }
-        return $this->returnSearchResults($volunteers,$search->id);
-      }
+
+
+      return $this->returnSearchResults($volunteers,$search->id);
     }
 
     public function getAll(Request $request){
@@ -254,7 +257,18 @@ class VolunteerController extends Controller {
       $search = new \teambernieny\Search();
       $search->Type = $type;
       if($type == "Name"){
-        $parameters=$request->FirstName.",".$request->LastName;
+        if(($request->FirstName != "") && ($request->LastName != "")){
+          $parameters=$request->FirstName.",".$request->LastName;
+        } elseif($request->FirstName != ""){
+          $parameters=$request->FirstName;
+
+        } elseif($request->LastName != ""){
+          $parameters=$request->LastName;
+
+        } else {
+          $parameters=" ".","." ";
+        }
+
       }
       if($type == "Email"){
         $parameters=$request->Email;
