@@ -148,9 +148,10 @@ class AttendeeController extends Controller {
                 $addcommitment->save();
               }
             }
-            return $this->returnCheck($request, "");
-        }
 
+        }
+        $message = "Volunteer Attendence Edited";
+        return $this->returnCheck($request, $message);
 
 
     }
@@ -194,7 +195,7 @@ class AttendeeController extends Controller {
       }
     }
     private function returnCheck(Request $request, $message){
-      $eventvolunteers = "" ;
+      $eventvolunteers = "";
       $eventvolunteers = \teambernieny\EventVolunteers::with('commitments','volunteer','event')->where('event_id', '=', $request->event_id)->get();
       $event = \teambernieny\Event::find($request->event_id);
       return view('volunteer.attendee.check')->with([

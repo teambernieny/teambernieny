@@ -47,6 +47,7 @@
       <input type='hidden' name ='_token' value='{{ csrf_token() }}'>
       <input type='hidden' name = 'attendance' value='{{$attendance->id}}'>
       <input type='hidden' name = 'event_id' value = '{{$event->id}}'>
+      
     </form>
   </div>
 
