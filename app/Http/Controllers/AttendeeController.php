@@ -150,6 +150,9 @@ class AttendeeController extends Controller {
             }
 
         }
+
+        $neighborhood_id=$this->checkNeighborhood($request);
+        $this->saveVolunteer($request, $attendance->volunteer, $neighborhood_id);
         $message = "Volunteer Attendence Edited";
         return $this->returnCheck($request, $message);
 
